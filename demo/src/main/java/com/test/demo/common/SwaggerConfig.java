@@ -25,6 +25,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
+
         return new ApiInfoBuilder()
         //页面标题
         .title("Spring Boot中使用Swagger2构建RESTful APIs")

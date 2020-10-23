@@ -15,7 +15,5 @@ public interface UserMapper {
     //根据用户信息修改数据
     int updateByUser(User user);
     //新增用户信息
-    int insertUsers(@Param("userList") List<User> user);
-    //获取用户表最大值id
-    Integer selectUserMaxId();
+    int insertUser(User user);
 }

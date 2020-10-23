@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.test.demo.model.User" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="age" property="age" jdbcType="INTEGER" />
         <result column="introduction" property="introduction" jdbcType="VARCHAR"/>
     </resultMap>
@@ -20,6 +21,9 @@
         </if>
         <if test="user.name != null">
             and name = #{user.name,jdbcType=VARCHAR}
+        </if>
+        <if test="user.password != null">
+            and password = #{user.password,jdbcType=VARCHAR}
         </if>
         <if test="user.age != null">
             and age = #{user.age,jdbcType=INTEGER}
@@ -38,6 +42,9 @@
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
             <if test="age != null">
                 age = #{age,jdbcType=INTEGER},
             </if>
@@ -47,15 +54,10 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <insert id="insertUsers" >
-        insert into t_user(id, name, age, introduction)
+    <insert id="insertUser" parameterType="com.test.demo.model.User">
+        insert into t_user(name,password, age, introduction)
         values
-        <foreach collection="userList" item="user" separator=",">
-            (#{user.id, jdbcType=INTEGER}, #{user.name, jdbcType=VARCHAR}, #{user.age, jdbcType=INTEGER}
-            , #{user.introduction, jdbcType=VARCHAR})
-        </foreach>
+        (#{name, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{age, jdbcType=INTEGER}
+            , #{introduction, jdbcType=VARCHAR})
     </insert>
-    <select id="selectUserMaxId" resultType="java.lang.Integer">
-        select max(id) from t_user
-    </select>
 </mapper>

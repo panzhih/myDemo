@@ -3,19 +3,25 @@ package com.test.demo.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @ApiModel(
         description = "用户数据"
 )
-public class User{
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -1L;
+
     @ApiModelProperty(value = "主键id")
     private Integer id;
-    @ApiModelProperty("名字")
+    @ApiModelProperty(value = "名字")
     private String name;
+    @ApiModelProperty(value = "密码")
+    private String password;
     @ApiModelProperty(value = "年龄")
     private Integer age;
-    @ApiModelProperty("介绍")
+    @ApiModelProperty(value = "介绍")
     private String introduction;
 
     public Integer getId() {
@@ -32,6 +38,14 @@ public class User{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getAge() {
