@@ -6,6 +6,11 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @Auther: 潘志红
+ * @Date: 2020/10/23
+ * @Description:数据库操作接口
+ */
 public interface UserMapper {
 
     //根据用户信息查询数据
@@ -16,4 +21,6 @@ public interface UserMapper {
     int updateByUser(User user);
     //新增用户信息
     int insertUser(User user);
+    //查询其他用户同名记录
+    List<User> selectUserByName(@Param("user") User user);
 }

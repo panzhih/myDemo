@@ -1,5 +1,9 @@
 package com.test.demo.common;
-
+/**
+ * @Auther: 潘志红
+ * @Date: 2020/10/23
+ * @Description:公共常量
+ */
 public class Common {
 
     //设置过期时间

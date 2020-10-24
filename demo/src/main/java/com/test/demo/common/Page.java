@@ -1,24 +1,17 @@
 package com.test.demo.common;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * @Auther: 潘志红
+ * @Date: 2020/10/23
+ * @Description:分页参数
+ */
+@Data
 public class Page{
-    //当前页
+    @ApiModelProperty(value = "当前页起始行")
     private Integer current;
-    //每页的数量
+    @ApiModelProperty(value = "每页行数")
     private Integer size;
-
-    public Integer getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Integer current) {
-        this.current = current;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
 }

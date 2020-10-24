@@ -1,5 +1,10 @@
 package com.test.demo.common;
 
+/**
+ * @Auther: 潘志红
+ * @Date: 2020/10/23
+ * @Description:统一返回类型
+ */
 public class ResultData {
     private Integer resultCode;
     private String resultMessage;

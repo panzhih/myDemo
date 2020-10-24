@@ -1,21 +1,25 @@
 package com.test.demo.control;
 
-import com.test.demo.common.Common;
 import com.test.demo.common.Page;
+import com.test.demo.model.RegisterUserBean;
 import com.test.demo.model.User;
 import com.test.demo.service.UserService;
-import com.test.demo.utils.MD5Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Auther: 潘志红
+ * @Date: 2020/10/23
+ * @Description:用户测试类控制层
+ */
 
 @RestController
 @RequestMapping(value = "user")
 @Api(value = "测试模块", tags = "用户信息增删改查接口")
-public class TestController {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -45,13 +49,13 @@ public class TestController {
     @RequestMapping(value = "updateUser",method = RequestMethod.POST)
     @ApiOperation(value = "修改用户信息", notes = "传入用户信息")
     public String updateUser(@ApiParam(value = "用户信息", required = true) User user,
-                            @ApiParam(value = "token", required = true) String token){
+                            @ApiParam(value = "token", required = true) @RequestParam String token){
         return userService.updateByUser(user,token);
     }
 
     @GetMapping(value = "insertUser")
     @ApiOperation(value = "注册用户信息", notes = "传入用户注册信息")
-    public String insertUser(@ApiParam(value = "用户信息", required = true) User user)  {
+    public String insertUser(@ApiParam(value = "注册用户信息", required = true) RegisterUserBean user)  {
         return userService.insertUser(user);
     }
 }

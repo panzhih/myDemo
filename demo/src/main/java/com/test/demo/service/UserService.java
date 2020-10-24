@@ -1,8 +1,14 @@
 package com.test.demo.service;
 
 import com.test.demo.common.Page;
+import com.test.demo.model.RegisterUserBean;
 import com.test.demo.model.User;
 
+/**
+ * @Auther: 潘志红
+ * @Date: 2020/10/23
+ * @Description:应用层接口
+ */
 public interface UserService {
 
     //根据用户信息查询数据
@@ -12,7 +18,7 @@ public interface UserService {
     //根据用户信息修改数据
     String updateByUser(User user,String token);
     //新增用户信息
-    String insertUser(User user);
+    String insertUser(RegisterUserBean user);
     //登录接口
     String login(String username, String password);
 }
