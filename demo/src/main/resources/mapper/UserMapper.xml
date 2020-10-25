@@ -20,7 +20,7 @@
             and id = #{user.id, jdbcType=INTEGER}
         </if>
         <if test="user.name != null">
-            and name = #{user.name,jdbcType=VARCHAR}
+            and name like concat('%', #{user.name,jdbcType=VARCHAR}, '%')
         </if>
         <if test="user.password != null">
             and password = #{user.password,jdbcType=VARCHAR}
@@ -29,7 +29,7 @@
             and age = #{user.age,jdbcType=INTEGER}
         </if>
         <if test="user.introduction != null">
-            and introduction = #{user.introduction,jdbcType=VARCHAR}
+            and introduction like concat('%',  #{user.introduction,jdbcType=VARCHAR}, '%')
         </if>
         limit #{page.current},#{page.size}
     </select>

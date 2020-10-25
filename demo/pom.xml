@@ -20,6 +20,7 @@
 
     <dependencies>
 
+        <!-- spring boot 自带引入 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -90,6 +91,7 @@
         </dependency>
     </dependencies>
 
+    <!-- maven引入 -->
     <build>
         <plugins>
             <plugin>

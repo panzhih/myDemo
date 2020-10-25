@@ -1,8 +1,9 @@
 package com.test.demo.control;
 
 import com.test.demo.common.Page;
+import com.test.demo.model.QueryUserBean;
 import com.test.demo.model.RegisterUserBean;
-import com.test.demo.model.User;
+import com.test.demo.model.UpdateUserBean;
 import com.test.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,27 +34,36 @@ public class UserController {
 
     @GetMapping(value = "getUserList")
     @ApiOperation(value = "获取用户信息", notes = "传入信息")
-    public String getUser(@ApiParam(value = "用户信息", required = true) User user,
-                              @ApiParam(value = "分页参数", required = true) Page page,
-                              @ApiParam(value = "token", required = true) @RequestParam String token){
+    public String getUser(@ApiParam(value = "用户信息", required = true) QueryUserBean user,
+                          @ApiParam(value = "分页参数", required = true) Page page,
+                          @ApiParam(value = "token", required = true) @RequestParam String token){
         return userService.selectByUser(user, page,token);
     }
 
     @GetMapping(value = "deleteUser/{id}/{token}")
     @ApiOperation(value = "根据用户id删除用户信息", notes = "传入用户id")
     public String deleteUser(@ApiParam(value = "用户id", required = true) @PathVariable(value = "id") int id,
-                          @ApiParam(value = "token",required = true) @PathVariable(value = "token") String token){
+                             @ApiParam(value = "token",required = true) @PathVariable(value = "token") String token){
         return userService.deleteByPrimaryKey(id,token);
     }
 
     @RequestMapping(value = "updateUser",method = RequestMethod.POST)
     @ApiOperation(value = "修改用户信息", notes = "传入用户信息")
-    public String updateUser(@ApiParam(value = "用户信息", required = true) User user,
-                            @ApiParam(value = "token", required = true) @RequestParam String token){
+    public String updateUser(@ApiParam(value = "用户信息", required = true) UpdateUserBean user,
+                             @ApiParam(value = "token", required = true) @RequestParam String token){
         return userService.updateByUser(user,token);
     }
 
-    @GetMapping(value = "insertUser")
+    @RequestMapping(value = "updateUserPassword",method = RequestMethod.POST)
+    @ApiOperation(value = "修改用户登录密码", notes = "传入用户密码")
+    public String updateUserPassword(@ApiParam(value = "用户id",required = true) @RequestParam Integer id,
+                                     @ApiParam(value = "用户旧密码", required = true) @RequestParam String oldPassword,
+                                     @ApiParam(value = "用户新密码(字母或数字构成，长度4~16位)",required = true) @RequestParam String newPassword,
+                                     @ApiParam(value = "token", required = true) @RequestParam String token){
+        return userService.updateUserPassword(id,oldPassword,newPassword,token);
+    }
+
+    @PostMapping(value = "insertUser")
     @ApiOperation(value = "注册用户信息", notes = "传入用户注册信息")
     public String insertUser(@ApiParam(value = "注册用户信息", required = true) RegisterUserBean user)  {
         return userService.insertUser(user);

@@ -19,14 +19,14 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    @ApiModelProperty(value = "主键id",example = "1")
+    @ApiModelProperty(value = "主键id",required = true)
     private Integer id;
-    @ApiModelProperty(value = "名字")
+    @ApiModelProperty(value = "名字",required = true)
     private String name;
-    @ApiModelProperty(value = "密码")
+    @ApiModelProperty(value = "密码",required = true)
     private String password;
-    @ApiModelProperty(value = "年龄",example = "1")
+    @ApiModelProperty(value = "年龄",required = true)
     private Integer age;
-    @ApiModelProperty(value = "介绍")
+    @ApiModelProperty(value = "介绍",required = true)
     private String introduction;
 }

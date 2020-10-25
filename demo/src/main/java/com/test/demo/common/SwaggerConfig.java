@@ -34,8 +34,7 @@ public class SwaggerConfig {
         //页面标题
         .title("Spring Boot中使用Swagger2构建RESTful APIs")
         //描述
-        .description("欢迎来到java思维导图社区学习")
-        .termsOfServiceUrl("http://www.java-mindmap.com/")
+        .description("一个简单的用户操作接口")
         //版本号
         .version("1.0")
         .build();

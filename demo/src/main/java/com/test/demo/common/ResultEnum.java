@@ -8,7 +8,7 @@ public enum ResultEnum {
 
     SUCCESS(200,"成功"),
 
-    USERNAMEERROR(1001,"用户名不存在"),
+    USERNAMEERROR(1001,"用户不存在"),
 
     USERNAMEEXISTED(1002,"用户名已存在"),
 
