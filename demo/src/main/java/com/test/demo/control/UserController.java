@@ -40,11 +40,11 @@ public class UserController {
         return userService.selectByUser(user, page,token);
     }
 
-    @GetMapping(value = "deleteUser/{id}/{token}")
-    @ApiOperation(value = "根据用户id删除用户信息", notes = "传入用户id")
-    public String deleteUser(@ApiParam(value = "用户id", required = true) @PathVariable(value = "id") int id,
+    @GetMapping(value = "deleteUser/{ids}/{token}")
+    @ApiOperation(value = "根据用户id删除用户信息", notes = "传入用户ids")
+    public String deleteUser(@ApiParam(value = "用户id,多条操作(id用','隔开)", required = true) @PathVariable(value = "ids") String ids,
                              @ApiParam(value = "token",required = true) @PathVariable(value = "token") String token){
-        return userService.deleteByPrimaryKey(id,token);
+        return userService.deleteByIds(ids,token);
     }
 
     @RequestMapping(value = "updateUser",method = RequestMethod.POST)

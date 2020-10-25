@@ -34,7 +34,7 @@ public class SwaggerConfig {
         //页面标题
         .title("Spring Boot中使用Swagger2构建RESTful APIs")
         //描述
-        .description("一个简单的用户操作接口")
+        .description("一个简单的用户操作demo")
         //版本号
         .version("1.0")
         .build();

@@ -22,5 +22,7 @@ public interface UserMapper {
     //新增用户信息
     int insertUser(User user);
     //查询其他用户同名记录
-    List<User> selectUserByName(@Param("user") User user);
+    List<User> selectUserByName(User user);
+    //通过id获取记录
+    User selectById(@Param("id") int id);
 }

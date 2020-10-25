@@ -15,7 +15,7 @@ public interface UserService {
     //根据用户信息查询数据
     String selectByUser(QueryUserBean user, Page page, String token);
     //根据用户id删除数据
-    String deleteByPrimaryKey(int id, String token);
+    String deleteByIds(String ids, String token);
     //根据用户信息修改数据
     String updateByUser(UpdateUserBean user, String token);
     //新增用户信息

@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public String selectByUser(QueryUserBean user, Page page, String token) {
         Gson gson = new Gson();
         //验证token
-        if (VerificationToken(token)) {
+        if (verificationToken(token)) {
             return gson.toJson(new ResultData(ResultEnum.TOKENERROR.getCode(),ResultEnum.TOKENERROR.getMsg(),null));
         }
         //设置初始查询分页参数
@@ -64,22 +64,38 @@ public class UserServiceImpl implements UserService {
 
     /**
      *用户删除接口
-     * @param id：用户id
+     * @param ids：用户集ids
      * @param token:token唯一值
      * @return：json格式数据
      */
     @Override
-    public String deleteByPrimaryKey(int id, String token) {
+    public String deleteByIds(String ids, String token) {
         Gson gson = new Gson();
         //验证token
-        if (VerificationToken(token)) {
+        if (verificationToken(token)) {
             return gson.toJson(new ResultData(ResultEnum.TOKENERROR.getCode(),ResultEnum.TOKENERROR.getMsg(),null));
         }
-        int result = userMapper.deleteByPrimaryKey(id);
-        if(result > 0){
+        //验证ids格式
+        if(verificationIds(ids)){
+            return gson.toJson(new ResultData(ResultEnum.PARAMERROR.getCode(),ResultEnum.PARAMERROR.getMsg(),null));
+        }
+        StringBuffer stringBuffer = new StringBuffer();
+        String[] idArray = ids.split(",");
+        if(idArray.length > 0){
+            for(String id : idArray){
+                Integer userId = Integer.valueOf(id);
+                int result = userMapper.deleteByPrimaryKey(userId);
+                if(result < 1){
+                    stringBuffer.append(",").append(id);
+                }
+            }
+        }
+        if(StringUtils.isNotBlank(stringBuffer.toString())){
+            String resultMsg = stringBuffer.toString().substring(1);
+            return gson.toJson(new ResultData(ResultEnum.ERROR.getCode(),"用户id("+resultMsg+")删除失败,可能是用户不存在",null));
+        }else{
             return gson.toJson(new ResultData(ResultEnum.SUCCESS.getCode(),ResultEnum.SUCCESS.getMsg(),null));
         }
-        return gson.toJson(new ResultData(ResultEnum.ERROR.getCode(),ResultEnum.ERROR.getMsg(),null));
     }
 
     /**
@@ -92,7 +108,7 @@ public class UserServiceImpl implements UserService {
     public String updateByUser(UpdateUserBean user, String token) {
         Gson gson = new Gson();
         //验证token
-        if (VerificationToken(token)) {
+        if (verificationToken(token)) {
             return gson.toJson(new ResultData(ResultEnum.TOKENERROR.getCode(),ResultEnum.TOKENERROR.getMsg(),null));
         }
         //验证id
@@ -186,14 +202,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateUserPassword(Integer id, String oldPassword, String newPassword, String token) {
         Gson gson = new Gson();
-        if(id == null || StringUtils.isBlank(oldPassword)
-                || StringUtils.isBlank(newPassword)
-                || StringUtils.isBlank(token)){
-            return gson.toJson(new ResultData(ResultEnum.PARAMERROR.getCode(),ResultEnum.PARAMERROR.getMsg(),null));
-        }
         //验证token
-        if (VerificationToken(token)) {
+        if (verificationToken(token)) {
             return gson.toJson(new ResultData(ResultEnum.TOKENERROR.getCode(),ResultEnum.TOKENERROR.getMsg(),null));
+        }
+        //验证参数信息
+        if(id == null || StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword)){
+            return gson.toJson(new ResultData(ResultEnum.PARAMERROR.getCode(),ResultEnum.PARAMERROR.getMsg(),null));
         }
         //验证密码
         if(verificationPassword(oldPassword) || verificationPassword(newPassword)){
@@ -208,7 +223,7 @@ public class UserServiceImpl implements UserService {
         page.setSize(1);
         List<User> userList = this.userMapper.selectByUser(user,page);
         if(userList == null || userList.size() == 0){
-            return gson.toJson(new ResultData(ResultEnum.USERNAMEERROR.getCode(),ResultEnum.USERNAMEERROR.getMsg(),null));
+            return gson.toJson(new ResultData(ResultEnum.PASSWORDERROR.getCode(),ResultEnum.PASSWORDERROR.getMsg(),null));
         }
         //修改新密码
         User updateUser = new User();
@@ -226,7 +241,10 @@ public class UserServiceImpl implements UserService {
      * @param token：token唯一值
      * @return Boolean(true-失效，false-有效)
      */
-    private Boolean VerificationToken(String token){
+    private Boolean verificationToken(String token){
+        if(StringUtils.isBlank(token)){
+            return true;
+        }
         return redisTemplate.opsForValue().getOperations().getExpire(token) < 1;
     }
 
@@ -279,5 +297,23 @@ public class UserServiceImpl implements UserService {
         Matcher m = p.matcher(password);
         boolean flag = m.matches();
         return !flag;
+    }
+
+    /**
+     * 验证ids格式
+     * @param ids：用户id集
+     * @return Boolean(true-失效，false-有效)
+     */
+    private static boolean verificationIds(String ids) {
+        if(StringUtils.isBlank(ids) || ids.equals(",")){
+            return true;
+        }
+        String[] idArray = ids.split(",");
+        for(String id : idArray){
+            if(StringUtils.isBlank(id) || !id.matches("^[0-9]*$")){
+                return true;
+            }
+        }
+        return false;
     }
 }
