@@ -1,10 +1,13 @@
 package com.test.demo.common;
 
+import lombok.Data;
+
 /**
  * @Auther: 潘志红
  * @Date: 2020/10/23
  * @Description:统一返回类型
  */
+@Data
 public class ResultData {
     private Integer resultCode;
     private String resultMessage;
@@ -15,38 +18,6 @@ public class ResultData {
         this.resultCode = resultCode;
         this.resultMessage = resultMessage;
         this.serverTime = System.currentTimeMillis();
-        this.data = data;
-    }
-
-    public Integer getResultCode() {
-        return resultCode;
-    }
-
-    public void setResultCode(Integer resultCode) {
-        this.resultCode = resultCode;
-    }
-
-    public String getMsg() {
-        return resultMessage;
-    }
-
-    public void setMsg(String resultMessage) {
-        this.resultMessage = resultMessage;
-    }
-
-    public Long getServerTime() {
-        return serverTime;
-    }
-
-    public void setServerTime(Long serverTime) {
-        this.serverTime = serverTime;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
         this.data = data;
     }
 
