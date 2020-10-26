@@ -1,10 +1,7 @@
 package com.test.demo.service.Impl;
 
 import com.google.gson.Gson;
-import com.test.demo.common.Common;
-import com.test.demo.common.Page;
-import com.test.demo.common.ResultData;
-import com.test.demo.common.ResultEnum;
+import com.test.demo.common.*;
 import com.test.demo.dao.UserMapper;
 import com.test.demo.model.QueryUserBean;
 import com.test.demo.model.RegisterUserBean;
@@ -52,10 +49,10 @@ public class UserServiceImpl implements UserService {
         }
         //设置初始查询分页参数
         if(page.getCurrent() == null){
-            page.setCurrent(0);
+            page.setCurrent(UserCommon.INITCURRENT);
         }
         if(page.getSize() == null){
-            page.setSize(10);
+            page.setSize(UserCommon.INITSIZE);
         }
         User userOne = gson.fromJson(gson.toJson(user),User.class);
         List<User> userList = userMapper.selectByUser(userOne, page);
@@ -178,8 +175,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(MD5Util.getMD5(password));
         user.setName(username);
         Page page = new Page();
-        page.setCurrent(0);
-        page.setSize(1);
+        page.setCurrent(UserCommon.INITCURRENT);
+        page.setSize(UserCommon.INITSIZE);
         //查询用户是否存在
         List<User> userList = this.userMapper.selectByUser(user,page);
         if(userList == null || userList.size() == 0){
@@ -219,8 +216,8 @@ public class UserServiceImpl implements UserService {
         user.setId(id);
         user.setPassword(MD5Util.getMD5(oldPassword));
         Page page = new Page();
-        page.setCurrent(0);
-        page.setSize(1);
+        page.setCurrent(UserCommon.INITCURRENT);
+        page.setSize(UserCommon.INITSIZE);
         List<User> userList = this.userMapper.selectByUser(user,page);
         if(userList == null || userList.size() == 0){
             return gson.toJson(new ResultData(ResultEnum.PASSWORDERROR.getCode(),ResultEnum.PASSWORDERROR.getMsg(),null));
@@ -260,8 +257,8 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(name);
         Page page = new Page();
-        page.setCurrent(0);
-        page.setSize(1);
+        page.setCurrent(UserCommon.INITCURRENT);
+        page.setSize(UserCommon.INITSIZE);
         List<User> userList = this.userMapper.selectByUser(user,page);
         return userList != null && userList.size() > 0;
     }
@@ -272,16 +269,13 @@ public class UserServiceImpl implements UserService {
      * @return Boolean (true-验证失败，false-验证通过)
      */
     private boolean verificationOtherValue(User user) {
-        //用户名为空或者用户名大于20个字符
-        if(StringUtils.isBlank(user.getName()) || user.getName().length() > 20){
+        if(StringUtils.isBlank(user.getName()) || user.getName().length() > UserCommon.NAMELENGTH){
             return true;
         }
-        //用户介绍不为空或者用户介绍大于100个字符
-        if(StringUtils.isBlank(user.getIntroduction()) || user.getIntroduction().length() > 100){
+        if(StringUtils.isBlank(user.getIntroduction()) || user.getIntroduction().length() > UserCommon.INTRODUCTIONLENGTH){
             return true;
         }
-        //用户年龄为空或者用户年龄在1~200岁
-        return user.getAge() == null || user.getAge() <= 0 || user.getAge() > 200;
+        return user.getAge() == null || user.getAge() < UserCommon.AGEMIN || user.getAge() > UserCommon.AGEMAX;
     }
 
     /**
@@ -293,7 +287,7 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isBlank(password)){
             return true;
         }
-        Pattern p = Pattern.compile("[a-zA-Z0-9]{4,16}");
+        Pattern p = Pattern.compile("[a-zA-Z0-9]{"+UserCommon.PASSWORDMIN+","+UserCommon.PASSWORDMAX+"}");
         Matcher m = p.matcher(password);
         boolean flag = m.matches();
         return !flag;
